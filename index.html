@@ -1,0 +1,354 @@
+<!-- profile.html -->
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Solo Leveling — Hunter Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#0f1720;
+    --muted:#94a3b8;
+    --accent:#3b82f6;
+    --glow:#6ee7b7;
+    --header-img: url('header-image.jpg'); /* <-- replace with Jinwoo image URL or local path */
+  }
+  *{box-sizing:border-box;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  html,body{height:100%;margin:0;background:
+    radial-gradient(1200px 600px at 10% 10%, rgba(59,130,246,0.06), transparent),
+    linear-gradient(180deg,var(--bg), #03050a);
+    color:#e6eef8;}
+  .container{max-width:1100px;margin:28px auto;padding:20px;display:grid;grid-template-columns:360px 1fr;gap:20px;}
+  /* Header */
+  .hero{
+    grid-column:1 / -1;
+    height:220px;
+    border-radius:12px;
+    background-image: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.6)), var(--header-img);
+    background-size:cover;background-position:center;
+    display:flex;align-items:end;padding:18px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 40px rgba(59,130,246,0.06);
+    position:relative;overflow:hidden;
+  }
+  .hero::after{
+    content:'';position:absolute;inset:0;background:
+    radial-gradient(700px 200px at 80% 40%, rgba(59,130,246,0.06), transparent);
+    mix-blend-mode:overlay;
+  }
+  .hero-left{z-index:2;display:flex;gap:14px;align-items:center;}
+  .avatar{width:84px;height:84px;border-radius:12px;overflow:hidden;border:2px solid rgba(255,255,255,0.06);}
+  .avatar img{width:100%;height:100%;object-fit:cover;display:block;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.6));}
+  .hero-meta h1{margin:0;font-size:20px;letter-spacing:0.6px;}
+  .hero-meta p{margin:4px 0 0;color:var(--muted);font-size:13px;}
+  .rank-badge{margin-left:auto;padding:8px 12px;border-radius:10px;background:linear-gradient(90deg,#0ea5e9,#6366f1);font-weight:700;color:#021028;}
+  /* Left panel */
+  .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.007));padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);}
+  .stats{display:grid;gap:10px;margin-top:12px;}
+  .stat-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;}
+  .progress{height:10px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden;width:100%;margin-left:12px;}
+  .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent), #7c3aed);border-radius:999px;}
+  .small{font-size:12px;color:var(--muted);}
+  /* Rank progress */
+  .rank-track{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .rank-pill{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);font-weight:600;font-size:13px}
+  .rank-pill.active{background:linear-gradient(90deg,#ef4444,#7c3aed);color:#fff;box-shadow:0 6px 18px rgba(124,58,237,0.12)}
+  /* Mid & Right content */
+  .right{display:flex;flex-direction:column;gap:18px;}
+  .card-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .skills ul{list-style:none;padding:0;margin:6px 0 0;display:grid;gap:8px}
+  .skill-item{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.02);padding:10px;border-radius:8px}
+  .gear li{margin:6px 0;padding:8px;background:rgba(255,255,255,0.01);border-radius:8px;}
+  .achievements{display:flex;gap:12px;flex-wrap:wrap}
+  .achv{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:10px;border-radius:10px;min-width:140px}
+  /* Shadow Army */
+  .shadows table{width:100%;border-collapse:collapse}
+  .shadows th, .shadows td{padding:8px;text-align:left;border-bottom:1px dashed rgba(255,255,255,0.03);}
+  /* Controls */
+  .controls{display:flex;gap:10px;justify-content:flex-end;}
+  button{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px;color:inherit;font-weight:600;cursor:pointer}
+  button.primary{background:linear-gradient(90deg,var(--accent),#7c3aed);border:0;color:#021028}
+  input[type="text"], select, textarea{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+  footer{grid-column:1 / -1;text-align:center;color:var(--muted);font-size:13px;padding:8px 0 24px}
+  /* responsive */
+  @media (max-width:980px){.container{grid-template-columns:1fr;}.card-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero panel">
+      <div class="hero-left">
+        <div class="avatar"><img id="hero-avatar" src="avatar.jpg" alt="avatar"></div>
+        <div class="hero-meta">
+          <h1 id="display-name">[Your Name] — <span id="alias">Shadow Walker</span></h1>
+          <p id="subtitle" class="small">Class: <strong id="class">Assassin</strong> · Guild: <span id="guild">Lone Wolves</span></p>
+        </div>
+      </div>
+      <div class="rank-badge" id="display-rank">Rank: S</div>
+    </div>
+
+    <!-- Left column -->
+    <aside class="panel">
+      <h3>Hunter Stats</h3>
+      <div class="stats" id="stats-container">
+        <!-- Individual stat rows inserted by JS -->
+      </div>
+
+      <div style="margin-top:14px;">
+        <div class="small">Rank Progress</div>
+        <div class="rank-track" id="rank-track">
+          <div class="rank-pill" data-rank="E">E</div>
+          <div class="rank-pill" data-rank="D">D</div>
+          <div class="rank-pill" data-rank="C">C</div>
+          <div class="rank-pill" data-rank="B">B</div>
+          <div class="rank-pill" data-rank="A">A</div>
+          <div class="rank-pill active" data-rank="S">S</div>
+          <div class="rank-pill" data-rank="SS">SS</div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <div class="small">Daily Training</div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button id="log-btn">Log +</button>
+          <button id="export-json" class="primary">Export JSON</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right column -->
+    <main class="right">
+      <div class="card-row">
+        <section class="panel">
+          <h3>Skills & Progress</h3>
+          <div class="skills" id="skills-list">
+            <!-- skill items -->
+          </div>
+        </section>
+
+        <section class="panel">
+          <h3>Weapons & Gear</h3>
+          <ul class="gear" id="gear-list">
+            <!-- gear items -->
+          </ul>
+        </section>
+      </div>
+
+      <div class="card-row">
+        <section class="panel">
+          <h3>Achievements</h3>
+          <div class="achievements" id="achievements">
+            <!-- achievements -->
+          </div>
+        </section>
+
+        <section class="panel shadows">
+          <h3>Shadow Army</h3>
+          <table id="shadow-table">
+            <thead><tr><th>Name</th><th>Type</th><th>Rank</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </section>
+      </div>
+
+      <section class="panel">
+        <h3>Profile Controls / Edit</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <input id="input-name" placeholder="Hunter name (ex: Ram Ji)">
+          <input id="input-alias" placeholder="Hunter alias (ex: Shadow Walker)">
+          <select id="input-class"><option>Assassin</option><option>Warrior</option><option>Mage</option><option>Tank</option><option>Shadow Monarch</option></select>
+          <input id="input-guild" placeholder="Guild name">
+        </div>
+        <div style="display:flex;gap:10px;margin-top:10px;">
+          <button id="save-btn" class="primary">Save Profile</button>
+          <button id="load-btn">Load Profile</button>
+          <button id="reset-btn">Reset</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>Solo Leveling — Personal Hunter Profile • Customize image & text as you like</footer>
+  </div>
+
+<script>
+/* ====== INITIAL DATA ====== */
+const defaultData = {
+  name:'[Your Name]',
+  alias:'Shadow Walker',
+  class:'Assassin',
+  guild:'Lone Wolves',
+  rank:'S',
+  avatar:'avatar.jpg', // replace with local or remote image
+  headerImg:'header-image.jpg', // replace with Jinwoo image URL
+  stats: {
+    Strength: 72,
+    Agility: 64,
+    Intelligence: 40,
+    Stamina: 82,
+    Vitality: 70,
+    Charm: 28,
+    'Magic Power': 56
+  },
+  skills:[
+    {name:'Shadow Extraction', level:7, progress:70},
+    {name:'Dagger Mastery', level:5, progress:50},
+    {name:'Regeneration (Passive)', level:4, progress:40},
+    {name:'Shadow Step (Ultimate)', level:2, progress:20}
+  ],
+  gear:[
+    'Primary Weapon: Demon King's Dagger (Lv.7)',
+    'Armor: Shadow Monarch Coat',
+    'Accessory: Ring of Vitality +3',
+    'Artifact: Mana Crystal'
+  ],
+  achievements:[
+    {title:'Completed Dungeons', value:'124'},
+    {title:'Highest Dungeon', value:'A-rank: Abyssal Pit'},
+    {title:'Bosses Defeated', value:'Kaiser of the Depths'}
+  ],
+  shadows:[
+    {name:'Aegis', type:'Tank', rank:'A'},
+    {name:'Shade', type:'Assassin', rank:'B'},
+    {name:'Iris', type:'Mage', rank:'B'}
+  ]
+}
+
+/* ====== RENDERING ====== */
+function el(q){return document.querySelector(q)}
+function renderAll(data){
+  el('#display-name').innerHTML = data.name + ' — <span id="alias">'+data.alias+'</span>';
+  el('#alias').textContent = data.alias;
+  el('#class').textContent = data.class;
+  el('#guild').textContent = data.guild;
+  el('#display-rank').textContent = 'Rank: ' + data.rank;
+  // header & avatar
+  document.documentElement.style.setProperty('--header-img', `url('${data.headerImg}')`);
+  el('#hero-avatar').src = data.avatar;
+
+  // stats
+  const sc = el('#stats-container'); sc.innerHTML = '';
+  for(const [k,v] of Object.entries(data.stats)){
+    const pct = Math.round(v);
+    const row = document.createElement('div'); row.className='stat-row';
+    row.innerHTML = `<div>${k}</div>
+      <div style="display:flex;align-items:center;width:62%"><div class="small" style="min-width:34px;text-align:right;margin-right:10px">${v}</div><div class="progress"><i style="width:${pct}%"></i></div></div>`;
+    sc.appendChild(row);
+  }
+
+  // skills
+  const sk = el('#skills-list'); sk.innerHTML = '';
+  data.skills.forEach(s=>{
+    const d = document.createElement('div'); d.className='skill-item';
+    d.innerHTML = `<div><strong>${s.name}</strong><div class="small">Lv.${s.level}</div></div><div style="width:45%"><div class="progress"><i style="width:${s.progress}%"></i></div></div>`;
+    sk.appendChild(d);
+  });
+
+  // gear
+  const g = el('#gear-list'); g.innerHTML=''; data.gear.forEach(i=>{
+    const li = document.createElement('li'); li.textContent = i; g.appendChild(li);
+  });
+
+  // achievements
+  const a = el('#achievements'); a.innerHTML='';
+  data.achievements.forEach(ac=>{
+    const box = document.createElement('div'); box.className='achv';
+    box.innerHTML = `<strong>${ac.title}</strong><div class="small">${ac.value}</div>`;
+    a.appendChild(box);
+  });
+
+  // shadow army
+  const tb = el('#shadow-table tbody'); tb.innerHTML='';
+  data.shadows.forEach(s=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${s.name}</td><td>${s.type}</td><td>${s.rank}</td>`;
+    tb.appendChild(tr);
+  });
+
+  // rank track highlight
+  document.querySelectorAll('.rank-pill').forEach(p=>{
+    p.classList.toggle('active', p.dataset.rank === data.rank);
+  });
+
+  // fill edit inputs
+  el('#input-name').value = data.name;
+  el('#input-alias').value = data.alias;
+  el('#input-class').value = data.class;
+  el('#input-guild').value = data.guild;
+}
+
+/* ====== STORAGE ====== */
+function saveProfile(){
+  const d = window.appData;
+  d.name = el('#input-name').value || d.name;
+  d.alias = el('#input-alias').value || d.alias;
+  d.class = el('#input-class').value || d.class;
+  d.guild = el('#input-guild').value || d.guild;
+  localStorage.setItem('solo_profile', JSON.stringify(d));
+  renderAll(d);
+  alert('Profile saved locally ✅');
+}
+function loadProfile(){
+  const raw = localStorage.getItem('solo_profile');
+  if(!raw){ alert('No saved profile found — loading defaults.'); window.appData = JSON.parse(JSON.stringify(defaultData)); renderAll(window.appData); return; }
+  window.appData = JSON.parse(raw);
+  renderAll(window.appData);
+  alert('Profile loaded ✅');
+}
+function resetProfile(){
+  if(!confirm('Reset profile to defaults?')) return;
+  window.appData = JSON.parse(JSON.stringify(defaultData));
+  localStorage.removeItem('solo_profile');
+  renderAll(window.appData);
+}
+
+/* ====== EVENTS & small features ====== */
+el('#save-btn').addEventListener('click', saveProfile);
+el('#load-btn').addEventListener('click', loadProfile);
+el('#reset-btn').addEventListener('click', resetProfile);
+el('#log-btn').addEventListener('click', ()=>{
+  const date = new Date().toLocaleString();
+  const note = prompt('Training note / short log for '+date,'Completed dungeon run +5 XP');
+  if(note){
+    const data = window.appData;
+    data.achievements.unshift({title:'Training Log', value: date + ' — ' + note});
+    if(data.achievements.length>8) data.achievements.pop();
+    renderAll(data);
+    localStorage.setItem('solo_profile', JSON.stringify(data));
+  }
+});
+el('#export-json').addEventListener('click',()=>{
+  const data = JSON.stringify(window.appData, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='solo_profile.json'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+/* quickly change rank by clicking pills */
+document.querySelectorAll('.rank-pill').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    const r = p.dataset.rank;
+    window.appData.rank = r;
+    renderAll(window.appData);
+    localStorage.setItem('solo_profile', JSON.stringify(window.appData));
+  });
+});
+
+/* export center: produce a neat shareable summary */
+function exportTextSummary(){
+  const d = window.appData;
+  let out = `${d.name} — ${d.alias}\nClass: ${d.class} · Guild: ${d.guild} · Rank: ${d.rank}\n\nStats:\n`;
+  for(const [k,v] of Object.entries(d.stats)) out += `${k}: ${v}\n`;
+  out += '\nTop Skills:\n' + d.skills.map(s=>`${s.name} Lv.${s.level} (${s.progress}%)`).join('\n');
+  return out;
+}
+
+/* init */
+window.appData = JSON.parse(JSON.stringify(defaultData));
+renderAll(window.appData);
+
+/* If you want to set images via file input later (bonus) */
+</script>
+</body>
+  </html>
